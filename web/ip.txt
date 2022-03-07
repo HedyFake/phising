@@ -1,2 +1,0 @@
-IP: 103.173.141.210
-Browser: Chrome
